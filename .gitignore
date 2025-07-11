@@ -1,0 +1,257 @@
+# SharePoint Company Analyzer - Git Ignore File
+
+# =============================================================================
+# Python
+# =============================================================================
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+share/python-wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+MANIFEST
+
+# =============================================================================
+# Virtual Environments
+# =============================================================================
+.env
+.venv
+env/
+venv/
+ENV/
+env.bak/
+venv.bak/
+pip-selfcheck.json
+
+# =============================================================================
+# Data Files (CSV exports from SharePoint)
+# =============================================================================
+*.csv
+*.CSV
+LPATech.csv
+sharepoint_export.csv
+data/
+exports/
+
+# =============================================================================
+# Analysis Output Files
+# =============================================================================
+companies_*.json
+companies_*.csv
+companies_*.txt
+companies_improved_*.json
+companies_improved_*.csv
+companies_improved_*.txt
+companies_detailed_*.json
+companies_detailed_*.txt
+analysis_results/
+output/
+results/
+
+# =============================================================================
+# Logs and Temporary Files
+# =============================================================================
+*.log
+*.tmp
+*.temp
+temp/
+tmp/
+logs/
+debug.log
+error.log
+analysis.log
+
+# =============================================================================
+# IDE and Editor Files
+# =============================================================================
+# VSCode
+.vscode/
+*.code-workspace
+
+# PyCharm
+.idea/
+*.iml
+*.ipr
+*.iws
+
+# Sublime Text
+*.sublime-project
+*.sublime-workspace
+
+# Vim
+*.swp
+*.swo
+*~
+
+# Emacs
+*~
+\#*\#
+/.emacs.desktop
+/.emacs.desktop.lock
+*.elc
+auto-save-list
+tramp
+.\#*
+
+# Atom
+.atom/
+
+# =============================================================================
+# Operating System Files
+# =============================================================================
+# Windows
+Thumbs.db
+Thumbs.db:encryptable
+ehthumbs.db
+ehthumbs_vista.db
+*.stackdump
+[Dd]esktop.ini
+$RECYCLE.BIN/
+*.cab
+*.msi
+*.msix
+*.msm
+*.msp
+*.lnk
+
+# macOS
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Icon?
+
+# Linux
+*~
+.fuse_hidden*
+.directory
+.Trash-*
+.nfs*
+
+# =============================================================================
+# Jupyter Notebooks
+# =============================================================================
+.ipynb_checkpoints
+*.ipynb
+*-checkpoint.ipynb
+
+# =============================================================================
+# Documentation and Reports
+# =============================================================================
+*.pdf
+*.docx
+*.pptx
+*.xlsx
+docs/build/
+site/
+
+# =============================================================================
+# Testing and Coverage
+# =============================================================================
+.coverage
+.coverage.*
+coverage.xml
+*.cover
+*.py,cover
+.hypothesis/
+.pytest_cache/
+cover/
+htmlcov/
+.tox/
+.nox/
+cov.xml
+*.lcov
+
+# =============================================================================
+# Database Files
+# =============================================================================
+*.db
+*.sqlite
+*.sqlite3
+*.db3
+
+# =============================================================================
+# Configuration and Secrets
+# =============================================================================
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+config.json
+secrets.json
+*.key
+*.pem
+*.cert
+
+# =============================================================================
+# Package Management
+# =============================================================================
+# pip
+pip-log.txt
+pip-delete-this-directory.txt
+
+# Poetry
+poetry.lock
+
+# Pipenv
+Pipfile.lock
+
+# =============================================================================
+# Backup Files
+# =============================================================================
+*.bak
+*.backup
+*.old
+*.orig
+*_backup
+*_old
+backup/
+backups/
+
+# =============================================================================
+# Compressed Files
+# =============================================================================
+*.zip
+*.tar.gz
+*.rar
+*.7z
+*.gz
+*.bz2
+*.xz
+
+# =============================================================================
+# Memory Dumps and Profiling
+# =============================================================================
+*.prof
+*.hprof
+*.mem
+*.dmp
+core.*
+
+# =============================================================================
+# Custom Project Files
+# =============================================================================
+# Add any project-specific files you want to ignore
+test_data/
+sample_data/
+experimental/
+scratch/
+notes.txt
+todo.txt 
