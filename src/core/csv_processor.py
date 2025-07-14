@@ -11,7 +11,7 @@ import numpy as np
 from typing import Iterator, Dict, Any, Optional, List
 from pathlib import Path
 import logging
-from config import config
+from ..config.config import config
 
 
 class CSVProcessor:

@@ -8,7 +8,7 @@ legitimate company names while filtering out technical files and noise.
 
 import re
 from typing import List, Set, Optional
-from config import config
+from ..config.config import config
 
 
 class CompanyDetector:

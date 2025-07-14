@@ -12,7 +12,7 @@ from pathlib import Path
 from typing import Dict, Any, List, Optional, Counter
 from datetime import datetime
 import logging
-from config import config
+from ..config.config import config
 
 
 class ResultsManager:

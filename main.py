@@ -22,8 +22,9 @@ import logging
 from pathlib import Path
 from typing import Optional
 
-from company_analyzer import CompanyAnalyzer
-from config import config
+# Update imports to use new package structure
+from src.core.company_analyzer import CompanyAnalyzer
+from src.config.config import config
 
 
 def setup_logging(verbose: bool = False):
@@ -260,74 +261,39 @@ def main():
         # Configure column mappings if provided
         if args.column_mappings:
             mappings = parse_column_mappings(args.column_mappings)
-            if mappings:
-                analyzer.configure_csv_columns(mappings)
-                print(f"✅ Applied column mappings: {mappings}")
+            analyzer.configure_csv_columns(mappings)
         
         # Run analysis
-        print(f"🔍 Analyzing: {args.csv_file}")
-        print(f"📊 Chunk size: {args.chunk_size:,}")
-        print(f"🔍 Filter type: {args.filter_type}")
-        print()
-        
+        print(f"🔍 Analyzing {args.csv_file}...")
         success = analyzer.analyze()
         
-        if not success:
-            print("❌ Analysis failed")
-            return 1
-        
-        # Print summary
-        analyzer.print_summary()
-        
-        # Save results
-        print("\n💾 Saving results...")
-        created_files = analyzer.save_results(args.output_formats)
-        
-        if created_files:
-            print("✅ Results saved to:")
-            for file_path in created_files:
-                print(f"   📄 {file_path}")
-        
-        # Show statistics
-        stats = analyzer.get_analysis_stats()
-        print(f"\n📈 Analysis Statistics:")
-        print(f"   Detector type: {stats.get('detector_type', 'unknown').upper()}")
-        print(f"   Filter type: {stats.get('filter_type', 'all')}")
-        print(f"   Total rows processed: {stats['total_rows_processed']:,}")
-        print(f"   Technical files filtered: {stats['technical_files_filtered']:,}")
-        if stats.get('type_filtered', 0) > 0:
-            print(f"   Items filtered by type: {stats['type_filtered']:,}")
-        print(f"   Unique companies found: {stats['unique_companies']:,}")
-        print(f"   Total company entries: {stats['total_company_entries']:,}")
-        
-        # Show enhanced analysis if available
-        if 'enhanced_analysis' in stats:
-            enhanced = stats['enhanced_analysis']
-            print(f"\n🚀 Enhanced Analysis:")
-            print(f"   Companies detected: {enhanced.get('companies_found', 0)}")
-            print(f"   Non-companies filtered: {enhanced.get('non_companies', 0)}")
-            print(f"   Detection accuracy: {enhanced.get('company_percentage', 0):.1f}%")
-            print(f"   Average confidence: {enhanced.get('average_confidence', 0):.2f}")
+        if success:
+            # Print summary
+            analyzer.print_summary()
             
-            # Show top reasons for company detection
-            if 'company_reasons' in enhanced:
-                print(f"   Top company indicators: {', '.join(list(enhanced['company_reasons'].keys())[:3])}")
-            if 'non_company_reasons' in enhanced:
-                print(f"   Top exclusion reasons: {', '.join(list(enhanced['non_company_reasons'].keys())[:3])}")
-        
-        # Interactive search if requested
-        if args.interactive:
-            analyzer.run_interactive_search()
-        
-        print("\n🎉 Analysis complete!")
-        return 0
-        
+            # Save results
+            output_files = analyzer.save_results(args.output_formats)
+            
+            print(f"\n📄 Output files created:")
+            for file in output_files:
+                print(f"   - {file}")
+            
+            # Run interactive search if requested
+            if args.interactive:
+                analyzer.run_interactive_search()
+            
+            print(f"\n✅ Analysis completed successfully!")
+            return 0
+        else:
+            print(f"\n❌ Analysis failed. Check the logs for details.")
+            return 1
+            
     except KeyboardInterrupt:
-        print("\n\n⚠️  Analysis interrupted by user")
-        return 130
+        print(f"\n\n⏹️  Analysis interrupted by user")
+        return 1
     except Exception as e:
-        logger.error(f"Analysis failed: {str(e)}")
-        print(f"❌ Error: {str(e)}")
+        logger.error(f"Unexpected error: {str(e)}")
+        print(f"\n❌ Unexpected error: {str(e)}")
         return 1
 
 

@@ -13,7 +13,7 @@ from typing import List, Set, Optional, Dict, Any
 from textblob import TextBlob
 from collections import Counter
 import logging
-from config import config
+from ..config.config import config
 
 
 class EnhancedCompanyDetector:

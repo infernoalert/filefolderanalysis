@@ -16,11 +16,11 @@ from typing import Dict, Any, List, Optional, Tuple
 from tqdm import tqdm
 import pandas as pd
 
-from config import config
-from csv_processor import CSVProcessor
-from company_detector import CompanyDetector
-from enhanced_company_detector import EnhancedCompanyDetector
-from results_manager import ResultsManager
+from ..config.config import config
+from .csv_processor import CSVProcessor
+from .company_detector import CompanyDetector
+from .enhanced_company_detector import EnhancedCompanyDetector
+from .results_manager import ResultsManager
 
 
 class CompanyAnalyzer:
