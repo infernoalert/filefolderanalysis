@@ -133,28 +133,7 @@ class AIEnhancedCompanyAnalyzer(CompanyAnalyzer):
         
         return stats
     
-    def export_for_mcp_ai(self) -> Dict[str, Any]:
-        """
-        Export results in enhanced MCP format with AI insights
-        
-        Returns:
-            Dictionary formatted for MCP with AI enhancement
-        """
-        # Get base MCP export
-        mcp_data = super().export_for_mcp()
-        
-        # Add AI analysis results
-        if self.ai_results:
-            mcp_data["ai_analysis"] = self.ai_results
-        
-        if self.executive_summary:
-            mcp_data["executive_summary"] = self.executive_summary
-        
-        # Add AI metadata
-        mcp_data["metadata"]["ai_enhanced"] = self.enable_ai
-        mcp_data["metadata"]["ai_analysis_status"] = "completed" if self.ai_results else "not_run"
-        
-        return mcp_data
+
     
     def get_industry_insights(self) -> Dict[str, Any]:
         """
@@ -309,11 +288,7 @@ class AIEnhancedCompanyAnalyzer(CompanyAnalyzer):
                     f.write(self.executive_summary)
                 created_files.append(str(summary_file))
             
-            # Save enhanced MCP export
-            mcp_file = output_dir / f"mcp_enhanced_{timestamp}.json"
-            with open(mcp_file, 'w', encoding='utf-8') as f:
-                json.dump(self.export_for_mcp_ai(), f, indent=2, default=str)
-            created_files.append(str(mcp_file))
+            
             
             self.logger.info(f"AI results saved to {len(created_files)} files")
             

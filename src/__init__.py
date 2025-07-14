@@ -2,7 +2,7 @@
 Company Analyzer Package
 
 A comprehensive Python package for analyzing CSV files and extracting company names
-with AI-enhanced detection capabilities and MCP server integration.
+with AI-enhanced detection capabilities.
 """
 
 __version__ = "1.0.0"

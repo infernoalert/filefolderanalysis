@@ -330,36 +330,7 @@ class ResultsManager:
         
         return sorted(matches, key=lambda x: x[1], reverse=True)
     
-    def export_for_mcp(self, companies: Counter, company_details: Dict[str, Any]) -> Dict[str, Any]:
-        """
-        Export results in a format suitable for MCP integration
-        
-        Args:
-            companies: Counter object with company data
-            company_details: Dictionary with detailed company information
-            
-        Returns:
-            Dictionary formatted for MCP
-        """
-        mcp_data = {
-            'metadata': {
-                'timestamp': self.timestamp,
-                'total_companies': len(companies),
-                'total_entries': sum(companies.values()),
-                'version': '1.0'
-            },
-            'companies': []
-        }
-        
-        for company, count in companies.most_common():
-            details = self._format_company_details(company, company_details)
-            mcp_data['companies'].append({
-                'name': company,
-                'frequency': count,
-                'details': details
-            })
-        
-        return mcp_data
+
     
     def get_file_list(self) -> List[str]:
         """Get list of expected output files"""

@@ -163,19 +163,13 @@ class AnalyzerConfig:
         self.spacy_model = os.getenv('ANALYZER_SPACY_MODEL', 'en_core_web_sm')
         self.enable_parallel_processing = os.getenv('ANALYZER_ENABLE_PARALLEL', 'false').lower() == 'true'
         
-        # AI and MCP integration settings
+        # AI integration settings
         self.enable_ai_analysis = os.getenv('ANALYZER_ENABLE_AI', 'false').lower() == 'true'
         self.openai_api_key = os.getenv('OPENAI_API_KEY', '')
         self.openai_model = os.getenv('OPENAI_MODEL', 'gpt-3.5-turbo')
         self.openai_max_tokens = int(os.getenv('OPENAI_MAX_TOKENS', '2000'))
         self.openai_temperature = float(os.getenv('OPENAI_TEMPERATURE', '0.3'))
         self.ai_max_companies_batch = int(os.getenv('AI_MAX_COMPANIES_BATCH', '20'))
-        
-        # MCP server settings
-        self.enable_mcp_server = os.getenv('ANALYZER_ENABLE_MCP', 'false').lower() == 'true'
-        self.mcp_server_host = os.getenv('MCP_SERVER_HOST', '0.0.0.0')
-        self.mcp_server_port = int(os.getenv('MCP_SERVER_PORT', '8005'))
-        self.mcp_enable_cors = os.getenv('MCP_ENABLE_CORS', 'true').lower() == 'true'
     
     def _load_from_environment(self):
         """Load configuration from environment variables"""

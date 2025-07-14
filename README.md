@@ -1,6 +1,6 @@
 # Company Analyzer
 
-A powerful, AI-enhanced Python solution for extracting company names from CSV files with offline NLP capabilities and MCP server integration. **Now with a beautiful web UI!**
+A powerful, AI-enhanced Python solution for extracting company names from CSV files with offline NLP capabilities. **Now with a beautiful web UI!**
 
 ## 🚀 Quick Start
 
@@ -51,7 +51,7 @@ python main.py your_file.csv --interactive
 
 ### 🤖 AI-Enhanced Analysis (New!)
 
-Want to turn your basic company list into smart business insights? Use MCP + AI:
+Want to turn your basic company list into smart business insights? Use AI:
 
 ```bash
 # 1. Setup AI (one-time)
@@ -66,9 +66,6 @@ analyzer.analyze()
 analyzer.print_ai_summary()
 analyzer.save_ai_results()
 "
-
-# 3. Or start MCP server for AI integration
-python -m src.mcp.run_mcp_server
 ```
 
 **What you get with AI:**
@@ -77,8 +74,6 @@ python -m src.mcp.run_mcp_server
 - 📈 Market insights
 - 💡 Strategic recommendations
 - 📋 Executive summaries
-
-**📖 New to MCP/AI? Read:** [Simple MCP Guide](docs/MCP_SIMPLE_GUIDE.md)
 
 ## 📁 Project Structure
 
@@ -95,9 +90,6 @@ company-analyzer/
 │   │   ├── ai_analyzer.py         # AI-powered analysis
 │   │   ├── company_analyzer_ai.py # AI-enhanced analyzer
 │   │   └── example_ai_usage.py    # Usage examples
-│   ├── mcp/                       # MCP server integration
-│   │   ├── mcp_server.py          # MCP server implementation
-│   │   └── run_mcp_server.py      # Server runner
 │   ├── config/                    # Configuration management
 │   │   ├── config.py              # Main configuration
 │   │   ├── config_example.json    # JSON config template
@@ -150,8 +142,6 @@ company-analyzer/
 - **📈 Market Insights**: Growth opportunities and trend analysis
 - **💡 Strategic Recommendations**: Actionable business advice
 - **📋 Executive Summaries**: Professional business reports
-- **🔗 MCP Server**: Model Context Protocol for AI assistant integration
-- **🚀 RESTful API**: Complete API with background processing
 
 ## 🛠️ Development
 
@@ -182,21 +172,17 @@ mypy src/
 ### 🌟 **Getting Started (Choose Your Path)**
 - **[UI README](UI_README.md)** - ⭐ **START HERE** for web interface usage
 - **[Demo Usage](demo_usage.py)** - Interactive examples and sample files
-- **[Simple MCP Guide](docs/MCP_SIMPLE_GUIDE.md)** - MCP/AI usage guide
 - **[Main README](README.md)** - This file, overview and CLI usage
 
 ### 🔧 **Configuration & Setup**
 - **[Configuration Guide](docs/CONFIGURATION.md)** - Detailed configuration options
-- **[AI/MCP Integration](docs/AI_MCP_INTEGRATION.md)** - Technical AI integration guide
 
 ### 📊 **Reference Documentation**
 - **[API Reference](docs/README.md)** - Complete API documentation
-- **[MCP AI Summary](docs/MCP_AI_SUMMARY.md)** - Feature overview and examples
 
 ### 🚀 **Quick Links**
 - **New user?** → [UI README](UI_README.md) (Web interface)
 - **Need examples?** → Run `python demo_usage.py`
-- **Want MCP/AI?** → [Simple MCP Guide](docs/MCP_SIMPLE_GUIDE.md)
 - **CLI user?** → [Configuration Guide](docs/CONFIGURATION.md)
 
 ## 🤝 Contributing

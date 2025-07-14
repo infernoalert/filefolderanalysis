@@ -7,7 +7,7 @@ This is the main module that integrates all components of the company analyzer:
 - Results management
 
 It provides a clean, modular interface for analyzing CSV files and extracting
-company names with improved organization for MCP integration.
+company names.
 """
 
 import logging
@@ -273,14 +273,7 @@ class CompanyAnalyzer:
         
         return stats
     
-    def export_for_mcp(self) -> Dict[str, Any]:
-        """
-        Export results in a format suitable for MCP integration
-        
-        Returns:
-            Dictionary formatted for MCP
-        """
-        return self.results_manager.export_for_mcp(self.companies, self.company_details)
+
     
     def configure_csv_columns(self, column_mappings: Dict[str, str]):
         """

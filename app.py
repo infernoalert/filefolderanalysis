@@ -103,49 +103,12 @@ def create_default_local_config() -> Dict[str, Any]:
         }
     }
 
-def create_default_mcp_config() -> Dict[str, Any]:
-    """Create default configuration for MCP analysis"""
-    return {
-        "chunk_size": 5000,
-        "filter_type": "all",
-        "confidence_threshold": 0.3,
-        "enable_enhanced_detection": True,
-        "enable_ai_analysis": True,
-        "enable_mcp_server": True,
-        "openai_model": "gpt-3.5-turbo",
-        "openai_max_tokens": 2000,
-        "openai_temperature": 0.3,
-        "ai_max_companies_batch": 20,
-        "mcp_server_host": "0.0.0.0",
-        "mcp_server_port": 8005,
-        "mcp_enable_cors": True,
-        "log_level": "INFO",
-        "output_formats": ["json", "csv", "txt"],
-        "max_search_results": 10,
-        "max_summary_companies": 50,
-        "known_companies": [
-            "Accent Group",
-            "AGL",
-            "Microsoft Corporation",
-            "Apple Inc"
-        ],
-        "csv_columns": {
-            "name": "Name",
-            "path": "Path",
-            "modified_by": "Modified By",
-            "item_type": "Item Type",
-            "file_size": "File Size",
-            "modified": "Modified"
-        }
-    }
+
 
 def validate_config(config: Dict[str, Any], analysis_type: str) -> tuple[bool, str]:
     """Validate configuration file"""
     try:
         required_fields = ["chunk_size", "filter_type", "confidence_threshold"]
-        
-        if analysis_type == "mcp":
-            required_fields.extend(["enable_ai_analysis", "openai_model"])
         
         missing_fields = [field for field in required_fields if field not in config]
         if missing_fields:
@@ -219,79 +182,7 @@ def run_local_analysis(csv_file, config: Dict[str, Any]) -> tuple[bool, str, Opt
     except Exception as e:
         return False, f"Error running analysis: {str(e)}", None
 
-def run_mcp_analysis(csv_file, config: Dict[str, Any]) -> tuple[bool, str, Optional[Any]]:
-    """Run MCP analysis with the provided configuration"""
-    try:
-        # Validate API key is provided
-        if not config.get("openai_api_key"):
-            return False, "OpenAI API key is required for MCP analysis", None
-        
-        # Set environment variables for AI
-        os.environ["OPENAI_API_KEY"] = config["openai_api_key"]
-        os.environ["ANALYZER_ENABLE_AI"] = "true"
-        os.environ["ANALYZER_ENABLE_MCP"] = "true"
-        
-        # Create temporary config file
-        with tempfile.NamedTemporaryFile(mode='w', suffix='.json', delete=False) as tmp_file:
-            json.dump(config, tmp_file)
-            config_file_path = tmp_file.name
-        
-        # Save uploaded CSV file
-        csv_file_path = None
-        if csv_file is not None:
-            with tempfile.NamedTemporaryFile(mode='wb', suffix='.csv', delete=False) as tmp_csv:
-                tmp_csv.write(csv_file.getvalue())
-                csv_file_path = tmp_csv.name
-        
-        # Initialize AI-enhanced analyzer
-        analyzer_config = AnalyzerConfig(config_file=config_file_path)
-        analyzer = AIEnhancedCompanyAnalyzer(
-            csv_file_path=csv_file_path,
-            chunk_size=config.get("chunk_size", 5000),
-            filter_type=config.get("filter_type", "all"),
-            enable_ai=True
-        )
-        
-        # Run analysis
-        success = analyzer.analyze()
-        
-        if success:
-            # Save results to files (like CLI does)
-            output_formats = config.get("output_formats", ["json", "csv", "txt"])
-            created_files = analyzer.save_results(output_formats)
-            
-            # Save AI results if available
-            ai_files = []
-            if hasattr(analyzer, 'save_ai_results'):
-                try:
-                    ai_files = analyzer.save_ai_results()
-                except:
-                    pass  # AI results saving is optional
-            
-            # Get AI-enhanced results
-            results = {
-                "companies": dict(analyzer.companies.most_common(50)),
-                "total_companies": len(analyzer.companies),
-                "total_entries": sum(analyzer.companies.values()),
-                "stats": analyzer.stats,
-                "using_enhanced_detector": analyzer.using_enhanced_detector,
-                "ai_enabled": analyzer.enable_ai,
-                "ai_results": analyzer.ai_results if hasattr(analyzer, 'ai_results') else None,
-                "executive_summary": analyzer.executive_summary if hasattr(analyzer, 'executive_summary') else None,
-                "output_files": created_files + ai_files  # Include all created file paths
-            }
-            
-            # Clean up temporary files
-            os.unlink(config_file_path)
-            if csv_file_path:
-                os.unlink(csv_file_path)
-            
-            return True, "AI-enhanced analysis completed successfully", results
-        else:
-            return False, "Analysis failed", None
-            
-    except Exception as e:
-        return False, f"Error running MCP analysis: {str(e)}", None
+
 
 def main():
     """Main Streamlit application"""
@@ -300,11 +191,7 @@ def main():
     
     # Sidebar for navigation
     st.sidebar.title("📋 Analysis Options")
-    analysis_mode = st.sidebar.selectbox(
-        "Select Analysis Mode",
-        ["Local (Offline)", "MCP (Online with AI)"],
-        help="Choose between local offline analysis or AI-enhanced online analysis"
-    )
+    analysis_mode = "Local (Offline)"  # Only local analysis mode available
     
     # Main content area
     col1, col2 = st.columns([1, 1])
@@ -380,69 +267,7 @@ def main():
                 mime="application/json"
             )
         
-        else:  # MCP Analysis
-            st.subheader("☁️ MCP Analysis Configuration")
-            
-            # Configuration upload
-            config_file = st.file_uploader(
-                "Upload MCP Configuration (JSON)",
-                type=['json'],
-                help="Upload a JSON configuration file for MCP analysis"
-            )
-            
-            if config_file is not None:
-                try:
-                    config = json.load(config_file)
-                    st.success("✅ Configuration loaded successfully")
-                    
-                    # Validate configuration
-                    is_valid, validation_message = validate_config(config, "mcp")
-                    if is_valid:
-                        display_status(validation_message, "success")
-                    else:
-                        display_status(validation_message, "error")
-                        return
-                        
-                except Exception as e:
-                    st.error(f"Error loading configuration: {str(e)}")
-                    return
-            else:
-                # Use default configuration
-                config = create_default_mcp_config()
-                st.info("Using default MCP configuration")
-            
-            # API Key input for MCP
-            st.subheader("🔑 API Configuration")
-            api_key = st.text_input(
-                "OpenAI API Key",
-                type="password",
-                help="Enter your OpenAI API key for AI-enhanced analysis"
-            )
-            
-            if api_key:
-                config["openai_api_key"] = api_key
-                st.success("✅ API key configured")
-            else:
-                st.warning("⚠️ API key is required for MCP analysis")
-            
-            # Show current configuration
-            with st.expander("📋 Current Configuration", expanded=False):
-                # Hide API key in display
-                display_config = config.copy()
-                if "openai_api_key" in display_config:
-                    display_config["openai_api_key"] = "***hidden***"
-                st.json(display_config)
-            
-            # Download default configuration template
-            st.subheader("📥 Download Configuration Template")
-            default_config = create_default_mcp_config()
-            config_json = json.dumps(default_config, indent=2)
-            st.download_button(
-                label="Download MCP Config Template",
-                data=config_json,
-                file_name="mcp_config.json",
-                mime="application/json"
-            )
+
     
     # Analysis section
     st.header("🚀 Run Analysis")
@@ -453,16 +278,13 @@ def main():
             st.error("❌ Please upload a CSV file first")
             return
         
-        if analysis_mode == "MCP (Online with AI)" and not config.get("openai_api_key"):
-            st.error("❌ Please provide an OpenAI API key for MCP analysis")
+        if config.get("enable_ai_analysis") and not config.get("openai_api_key"):
+            st.error("❌ Please provide an OpenAI API key for AI analysis")
             return
         
         # Show progress
         with st.spinner("🔄 Running analysis..."):
-            if analysis_mode == "Local (Offline)":
-                success, message, results = run_local_analysis(csv_file, config)
-            else:
-                success, message, results = run_mcp_analysis(csv_file, config)
+            success, message, results = run_local_analysis(csv_file, config)
         
         # Display results
         if success:

@@ -33,7 +33,7 @@ The application will automatically open in your web browser at:
 
 **In the sidebar, select:**
 - **Local (Offline)**: Fast analysis without internet connection
-- **MCP (Online with AI)**: AI-enhanced analysis with business insights
+- **AI-Enhanced Analysis**: AI-powered business insights (when configured)
 
 ### Step 2: Upload Files
 
@@ -52,7 +52,7 @@ The application will automatically open in your web browser at:
 - The app uses smart defaults if no config is uploaded
 - Download templates to customize later
 
-**Option C: For MCP Analysis**
+**Option C: For AI Analysis**
 - Enter your OpenAI API key
 - Configure AI settings in the JSON file
 
@@ -68,7 +68,7 @@ The application will automatically open in your web browser at:
 - **Total Companies Found**: Count of unique companies
 - **Total Entries**: Total mentions across all files
 - **Detector Type**: NLP-enhanced or basic detection
-- **AI Executive Summary**: Business insights (MCP mode only)
+- **AI Executive Summary**: Business insights (AI mode only)
 
 ### 🏢 Companies Tab
 - **Company List**: All detected companies with counts
@@ -77,7 +77,7 @@ The application will automatically open in your web browser at:
 
 ### 📋 Details Tab
 - **Technical Stats**: Processing details and performance
-- **AI Analysis**: Industry classifications and risk assessments (MCP mode)
+- **AI Analysis**: Industry classifications and risk assessments (AI mode)
 - **Configuration Used**: Settings applied for the analysis
 
 ## ⚙️ Configuration Files
@@ -109,27 +109,7 @@ The application will automatically open in your web browser at:
 }
 ```
 
-### MCP Configuration (mcp_config.json)
 
-```json
-{
-  "chunk_size": 5000,
-  "filter_type": "all",
-  "confidence_threshold": 0.3,
-  "enable_enhanced_detection": true,
-  "enable_ai_analysis": true,
-  "enable_mcp_server": true,
-  "openai_model": "gpt-3.5-turbo",
-  "openai_max_tokens": 2000,
-  "openai_temperature": 0.3,
-  "ai_max_companies_batch": 20,
-  "known_companies": [
-    "Microsoft Corporation",
-    "Apple Inc",
-    "Google LLC"
-  ]
-}
-```
 
 ## 🔧 Configuration Options
 
@@ -143,7 +123,7 @@ The application will automatically open in your web browser at:
 - **enable_caching**: Cache results for faster repeat analysis
 - **log_level**: Logging verbosity (`"DEBUG"`, `"INFO"`, `"WARNING"`, `"ERROR"`)
 
-### AI Options (MCP Mode)
+### AI Options (AI Mode)
 - **enable_ai_analysis**: Enable AI-powered insights
 - **openai_model**: GPT model to use (`"gpt-3.5-turbo"`, `"gpt-4"`)
 - **openai_max_tokens**: Maximum tokens per API call
@@ -163,7 +143,7 @@ The application will automatically open in your web browser at:
 
 ### 🏢 Business Intelligence
 - **Local Mode**: Quick company extraction for compliance
-- **MCP Mode**: AI-powered industry analysis and risk assessment
+- **AI Mode**: AI-powered industry analysis and risk assessment
 - **Reports**: Executive summaries and strategic recommendations
 
 ### 📊 Data Cleaning
@@ -210,7 +190,7 @@ The application will automatically open in your web browser at:
 
 When you first run the application, sample configuration files are created in:
 - `config_samples/local_config_sample.json`
-- `config_samples/mcp_config_sample.json`
+
 
 Use these as templates for your custom configurations.
 
