@@ -183,6 +183,7 @@ def main():
                 print(f"   python -c \"from src.ai.company_analyzer_ai import AIEnhancedCompanyAnalyzer; analyzer = AIEnhancedCompanyAnalyzer('{csv_file}', enable_ai=True); analyzer.analyze(); analyzer.print_ai_summary()\"")
                 print("2. Start MCP server:")
                 print("   python -m src.mcp.run_mcp_server")
+                print("   Server will run at: http://localhost:8005")
                 print("3. Read the guide: docs/MCP_SIMPLE_GUIDE.md")
             else:
                 print("\n⚠️ Basic setup OK, but AI analysis test failed")

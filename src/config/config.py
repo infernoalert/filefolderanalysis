@@ -174,7 +174,7 @@ class AnalyzerConfig:
         # MCP server settings
         self.enable_mcp_server = os.getenv('ANALYZER_ENABLE_MCP', 'false').lower() == 'true'
         self.mcp_server_host = os.getenv('MCP_SERVER_HOST', '0.0.0.0')
-        self.mcp_server_port = int(os.getenv('MCP_SERVER_PORT', '8000'))
+        self.mcp_server_port = int(os.getenv('MCP_SERVER_PORT', '8005'))
         self.mcp_enable_cors = os.getenv('MCP_ENABLE_CORS', 'true').lower() == 'true'
     
     def _load_from_environment(self):

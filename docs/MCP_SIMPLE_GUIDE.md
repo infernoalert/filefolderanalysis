@@ -62,8 +62,8 @@ python test_mcp_ai.py
 # Start the server (runs in background)
 python -m src.mcp.run_mcp_server
 
-# Server runs at: http://localhost:8000
-# API docs at: http://localhost:8000/docs
+# Server runs at: http://localhost:8005
+# API docs at: http://localhost:8005/docs
 ```
 
 ### Step 4: Use MCP to Enhance Your Results
@@ -71,7 +71,7 @@ python -m src.mcp.run_mcp_server
 #### Option A: API Endpoints (Direct HTTP)
 ```bash
 # 1. Submit your CSV for AI analysis
-curl -X POST "http://localhost:8000/analyze" \
+curl -X POST "http://localhost:8005/analyze" \
   -H "Content-Type: application/json" \
   -d '{
     "csv_file_path": "your_file.csv",
@@ -79,7 +79,7 @@ curl -X POST "http://localhost:8000/analyze" \
   }'
 
 # 2. Get AI insights for specific companies
-curl -X POST "http://localhost:8000/ai/insights" \
+curl -X POST "http://localhost:8005/ai/insights" \
   -H "Content-Type: application/json" \
   -d '{
     "companies": ["Microsoft Corporation", "Apple Inc"],
@@ -168,7 +168,7 @@ analyzer.save_ai_results()
 python -m src.mcp.run_mcp_server --verbose
 
 # Terminal 2: Submit analysis job
-curl -X POST "http://localhost:8000/analyze" \
+curl -X POST "http://localhost:8005/analyze" \
   -H "Content-Type: application/json" \
   -d '{"csv_file_path": "your_file.csv", "enable_ai_analysis": true}'
 ```
@@ -269,7 +269,7 @@ Risk Assessment: MEDIUM
 ## 🎉 Success Indicators
 
 You know it's working when you see:
-- ✅ Server starts: "Server running at http://localhost:8000"
+- ✅ Server starts: "Server running at http://localhost:8005"
 - ✅ AI analysis: "AI analysis completed for 156 companies"
 - ✅ Files created: `companies_*_ai_analysis.json`, `companies_*_executive_summary.txt`
 - ✅ Industry insights: JSON with industry classifications

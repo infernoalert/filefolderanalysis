@@ -113,7 +113,7 @@ Environment Variables:
   OPENAI_API_KEY          OpenAI API key for AI analysis
   OPENAI_MODEL           OpenAI model to use (default: gpt-3.5-turbo)
   MCP_SERVER_HOST        Server host (default: 0.0.0.0)
-  MCP_SERVER_PORT        Server port (default: 8000)
+  MCP_SERVER_PORT        Server port (default: 8005)
   ANALYZER_LOG_LEVEL     Log level (default: INFO)
   ANALYZER_ENABLE_AI     Enable AI analysis (default: false)
   

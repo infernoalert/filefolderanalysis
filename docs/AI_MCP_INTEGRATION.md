@@ -222,7 +222,7 @@ python run_mcp_server.py --config production_config.yaml
 
 ```bash
 # Start analysis
-curl -X POST "http://localhost:8000/analyze" \
+curl -X POST "http://localhost:8005/analyze" \
   -H "Content-Type: application/json" \
   -d '{
     "csv_file_path": "data.csv",
@@ -231,22 +231,22 @@ curl -X POST "http://localhost:8000/analyze" \
   }'
 
 # Get analysis results
-curl "http://localhost:8000/analysis/{analysis_id}"
+curl "http://localhost:8005/analysis/{analysis_id}"
 
 # List all analyses
-curl "http://localhost:8000/analyses"
+curl "http://localhost:8005/analyses"
 ```
 
 #### Search and AI Endpoints
 
 ```bash
 # Search companies
-curl -X POST "http://localhost:8000/search" \
+curl -X POST "http://localhost:8005/search" \
   -H "Content-Type: application/json" \
   -d '{"query": "microsoft", "max_results": 10}'
 
 # Get AI insights for specific companies
-curl -X POST "http://localhost:8000/ai/insights" \
+curl -X POST "http://localhost:8005/ai/insights" \
   -H "Content-Type: application/json" \
   -d '{
     "companies": ["Microsoft Corporation", "Apple Inc"],
@@ -254,7 +254,7 @@ curl -X POST "http://localhost:8000/ai/insights" \
   }'
 
 # Get AI statistics
-curl "http://localhost:8000/ai/stats"
+curl "http://localhost:8005/ai/stats"
 ```
 
 ### MCP Tools for AI Assistants
@@ -337,15 +337,15 @@ mcp_data = analyzer.export_for_mcp_ai()
 python run_mcp_server.py --verbose
 
 # 2. Submit analysis job
-curl -X POST "http://localhost:8000/analyze" \
+curl -X POST "http://localhost:8005/analyze" \
   -H "Content-Type: application/json" \
   -d '{"csv_file_path": "data.csv", "enable_ai_analysis": true}'
 
 # 3. Monitor progress
-curl "http://localhost:8000/analysis/analysis_1_20241201_120000"
+curl "http://localhost:8005/analysis/analysis_1_20241201_120000"
 
 # 4. Get AI insights for top companies
-curl -X POST "http://localhost:8000/ai/insights" \
+curl -X POST "http://localhost:8005/ai/insights" \
   -H "Content-Type: application/json" \
   -d '{"companies": ["Microsoft Corporation", "Apple Inc"]}'
 ```
@@ -394,7 +394,7 @@ AI_MAX_COMPANIES_BATCH=20
 # MCP Server Settings
 ANALYZER_ENABLE_MCP=true
 MCP_SERVER_HOST=0.0.0.0
-MCP_SERVER_PORT=8000
+MCP_SERVER_PORT=8005
 MCP_ENABLE_CORS=true
 ```
 
@@ -451,7 +451,7 @@ python run_mcp_server.py --check-deps
 python run_mcp_server.py --validate-config
 
 # Check port availability
-netstat -an | grep 8000
+netstat -an | grep 8005
 ```
 
 #### 3. AI Analysis Fails

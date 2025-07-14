@@ -352,7 +352,7 @@ class MCPCompanyAnalysisServer:
                 "completion_time": datetime.now().isoformat()
             })
     
-    def run_server(self, host: str = "0.0.0.0", port: int = 8000):
+    def run_server(self, host: str = "0.0.0.0", port: int = 8005):
         """Run the MCP server"""
         self.logger.info(f"Starting MCP server on {host}:{port}")
         uvicorn.run(self.app, host=host, port=port)

@@ -71,7 +71,7 @@ Your company analyzer now has **enterprise-grade AI and MCP capabilities**! Here
 | Integration Type | Use Case | Implementation |
 |-----------------|----------|----------------|
 | **Direct Python** | Custom applications | `from company_analyzer_ai import AIEnhancedCompanyAnalyzer` |
-| **REST API** | Web applications | `curl -X POST http://localhost:8000/analyze` |
+| **REST API** | Web applications | `curl -X POST http://localhost:8005/analyze` |
 | **MCP Tools** | AI assistants | ChatGPT, Claude integration via MCP protocol |
 | **Command Line** | Scripts and automation | `python run_mcp_server.py --config production.yaml` |
 
@@ -118,18 +118,18 @@ python run_mcp_server.py
 python run_mcp_server.py --host localhost --port 8080 --verbose
 
 # Access API documentation
-# http://localhost:8000/docs
+# http://localhost:8005/docs
 ```
 
 ### **4. Use REST API**
 ```bash
 # Start analysis
-curl -X POST "http://localhost:8000/analyze" \
+curl -X POST "http://localhost:8005/analyze" \
   -H "Content-Type: application/json" \
   -d '{"csv_file_path": "data.csv", "enable_ai_analysis": true}'
 
 # Get AI insights
-curl -X POST "http://localhost:8000/ai/insights" \
+curl -X POST "http://localhost:8005/ai/insights" \
   -H "Content-Type: application/json" \
   -d '{"companies": ["Microsoft Corporation", "Apple Inc"]}'
 ```
@@ -213,7 +213,7 @@ ANALYZER_ENABLE_AI=true
 # MCP Server
 ANALYZER_ENABLE_MCP=true
 MCP_SERVER_HOST=0.0.0.0
-MCP_SERVER_PORT=8000
+MCP_SERVER_PORT=8005
 
 # AI Model Settings
 OPENAI_MODEL=gpt-3.5-turbo  # or gpt-4
