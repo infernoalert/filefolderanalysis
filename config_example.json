@@ -1,0 +1,41 @@
+{
+  "chunk_size": 3000,
+  "default_csv_file": "my_data.csv",
+  "min_company_name_length": 3,
+  "max_company_name_length": 100,
+  "filter_type": "folders",
+  "confidence_threshold": 0.5,
+  "strict_mode": true,
+  "enable_enhanced_detection": true,
+  "enable_caching": true,
+  "enable_parallel_processing": false,
+  "log_level": "DEBUG",
+  "log_file": "debug_analyzer.log",
+  "max_search_results": 20,
+  "max_summary_companies": 100,
+  "output_directory": "custom_output",
+  "output_formats": ["json", "csv", "xlsx"],
+  "spacy_model": "en_core_web_sm",
+  "known_companies": [
+    "Accent Group",
+    "AGL",
+    "My Custom Company Inc",
+    "Another Business LLC"
+  ],
+  "exclude_patterns": [
+    "^TEST_.*",
+    ".*_BACKUP$",
+    "^TEMP_.*"
+  ],
+  "company_indicators": [
+    "\\b(startup|venture|capital)\\b"
+  ],
+  "csv_columns": {
+    "name": "Company Name",
+    "path": "File Path",
+    "modified_by": "Last Modified By",
+    "item_type": "Type",
+    "file_size": "Size",
+    "modified": "Date Modified"
+  }
+} 
