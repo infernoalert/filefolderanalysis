@@ -109,8 +109,6 @@ The application will automatically open in your web browser at:
 }
 ```
 
-
-
 ## 🔧 Configuration Options
 
 ### Core Settings
@@ -191,54 +189,30 @@ The application will automatically open in your web browser at:
 When you first run the application, sample configuration files are created in:
 - `config_samples/local_config_sample.json`
 
-
 Use these as templates for your custom configurations.
 
 ## 🆘 Support
 
 **For help with:**
 - **Setup Issues**: Check Python version (3.8+) and run `python run_ui.py`
-- **Configuration**: Download and modify the sample templates
-- **Analysis Problems**: Check CSV file format and column mappings
-- **AI Features**: Verify OpenAI API key and model availability
+- **Configuration**: See `config_samples/local_config_sample.json` for examples
+- **CSV Format**: Ensure your CSV has a "Name" column with file/folder names
+- **AI Features**: Get OpenAI API key from https://platform.openai.com/
 
-## 🚀 Advanced Features
+**Quick Commands:**
+```bash
+# Launch UI
+python run_ui.py
 
-### CSV Column Mapping
-Customize column names in your configuration:
-```json
-{
-  "csv_columns": {
-    "name": "Your_Name_Column",
-    "path": "Your_Path_Column",
-    "modified_by": "Your_Modified_By_Column",
-    "item_type": "Your_Type_Column"
-  }
-}
-```
+# Install spaCy model (if enhanced detection fails)
+python -m spacy download en_core_web_sm
 
-### Custom Company Lists
-Add known companies to improve detection:
-```json
-{
-  "known_companies": [
-    "Your Company Inc",
-    "Partner Business LLC",
-    "Client Corp"
-  ]
-}
-```
-
-### AI Batch Processing
-Configure AI analysis batching:
-```json
-{
-  "ai_max_companies_batch": 20,
-  "openai_max_tokens": 2000,
-  "openai_temperature": 0.3
-}
+# Check Python version
+python --version
 ```
 
 ---
 
-**🎉 Ready to analyze your data!** Upload your CSV file and start extracting valuable business insights. 
+## 🎉 Ready to Analyze!
+
+The web interface makes it easy to analyze your CSV files and extract company information. Just run `python run_ui.py` and start analyzing your data! 

@@ -95,22 +95,18 @@ company-analyzer/
 │   │   ├── config_example.json    # JSON config template
 │   │   └── config_example.yaml    # YAML config template
 │   └── utils/                     # Utility functions
-├── tests/                         # Test files
 ├── docs/                          # Documentation
 │   ├── README.md                  # Detailed documentation
-│   ├── CONFIGURATION.md           # Configuration guide
-│   ├── AI_MCP_INTEGRATION.md      # AI/MCP integration guide
-│   └── MCP_AI_SUMMARY.md          # MCP AI summary
-├── examples/                      # Usage examples
+│   └── CONFIGURATION.md           # Configuration guide
 ├── scripts/                       # Utility scripts
 │   └── setup.py                   # Setup script
+├── config_samples/                # Sample configurations
+│   └── local_config_sample.json   # Local analysis config
 ├── app.py                         # 🌟 Streamlit Web UI
 ├── run_ui.py                      # 🚀 UI launcher script
-├── demo_usage.py                  # 📖 Demo and usage examples
 ├── UI_README.md                   # 📱 UI documentation
 ├── main.py                        # Main CLI entry point
-├── requirements.txt               # Python dependencies
-└── setup.py                       # Package setup
+└── requirements.txt               # Python dependencies
 ```
 
 ## ✨ Features
@@ -171,7 +167,6 @@ mypy src/
 
 ### 🌟 **Getting Started (Choose Your Path)**
 - **[UI README](UI_README.md)** - ⭐ **START HERE** for web interface usage
-- **[Demo Usage](demo_usage.py)** - Interactive examples and sample files
 - **[Main README](README.md)** - This file, overview and CLI usage
 
 ### 🔧 **Configuration & Setup**
@@ -182,7 +177,6 @@ mypy src/
 
 ### 🚀 **Quick Links**
 - **New user?** → [UI README](UI_README.md) (Web interface)
-- **Need examples?** → Run `python demo_usage.py`
 - **CLI user?** → [Configuration Guide](docs/CONFIGURATION.md)
 
 ## 🤝 Contributing
@@ -203,13 +197,11 @@ This project is licensed under the MIT License - see the LICENSE file for detail
 
 **For Web UI Issues:**
 - Check [UI README](UI_README.md) for troubleshooting
-- Run `python demo_usage.py` for examples
 - Ensure Python 3.8+ is installed
 
 **For General Support:**
 - Create an issue on GitHub
 - Check the documentation in `docs/`
-- Review examples and demos
 
 **Common Solutions:**
 - **UI won't start**: Run `python run_ui.py` (handles setup automatically)
@@ -220,7 +212,6 @@ This project is licensed under the MIT License - see the LICENSE file for detail
 ### 🚀 **Quick Start Options**
 - **Easiest**: `python run_ui.py` → Open `http://localhost:8501`
 - **CLI**: `python main.py your_file.csv`
-- **Demo**: `python demo_usage.py` → Get sample files and examples
 
 ---
 
