@@ -13,6 +13,7 @@ A **powerful, AI-enhanced** Python solution for extracting company names from CS
 - **🔎 Interactive Search**: Built-in search with detailed analysis capabilities
 - **🔧 Configurable**: Easy-to-modify configuration system
 - **📈 Detailed Analytics**: Comprehensive statistics and confidence scoring
+- **🗂️ Flexible Filtering**: Analyze all items, folders only, or files only
 - **🚀 MCP-Ready**: Designed for future MCP integration
 - **🛡️ Robust Fallback**: Gracefully falls back to basic detector if enhanced fails
 - **💻 Offline Operation**: No API calls or internet connectivity required
@@ -38,6 +39,12 @@ The enhanced detector solves common false positive problems:
 4. **Technical Term Analysis** - Filters development, admin, and system terminology
 5. **Document Structure Recognition** - Identifies page numbers, sections, chapters
 6. **Confidence Scoring** - Multi-layered scoring system with detailed reasoning
+
+### 🗂️ **Flexible Filtering Options:**
+- **All Items** (default) - Analyze both files and folders
+- **Folders Only** - Focus on directory/folder structures containing company names
+- **Files Only** - Analyze individual files for company identification
+- **Smart Type Detection** - Automatically identifies item types from SharePoint exports
 
 ## 🏗️ Architecture
 
@@ -92,6 +99,11 @@ python main.py your_file.csv --csv-info
 ```bash
 # Custom chunk size for large files
 python main.py large_file.csv --chunk-size 10000
+
+# Filter analysis to specific item types
+python main.py data.csv --filter-type folders    # Analyze folders only
+python main.py data.csv --filter-type files      # Analyze files only
+python main.py data.csv --filter-type all        # Analyze both (default)
 
 # Generate specific output formats
 python main.py data.csv --output-formats json csv

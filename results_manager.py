@@ -30,7 +30,7 @@ class ResultsManager:
         self.logger = logging.getLogger(__name__)
         
     def save_results(self, companies: Counter, company_details: Dict[str, Any], 
-                    output_formats: Optional[List[str]] = None) -> List[str]:
+                    output_formats: Optional[List[str]] = None, filter_type: str = 'all') -> List[str]:
         """
         Save analysis results in multiple formats
         
@@ -38,6 +38,7 @@ class ResultsManager:
             companies: Counter object with company frequencies
             company_details: Dictionary with detailed company information
             output_formats: List of formats to save (default: all formats)
+            filter_type: Type of items analyzed ('all', 'folders', 'files')
             
         Returns:
             List of created file paths
@@ -58,7 +59,7 @@ class ResultsManager:
                     file_path = self._save_csv(companies)
                     created_files.append(file_path)
                 elif format_type == 'txt':
-                    file_path = self._save_txt(companies, company_details)
+                    file_path = self._save_txt(companies, company_details, filter_type)
                     created_files.append(file_path)
                 else:
                     self.logger.warning(f"Unknown output format: {format_type}")
@@ -114,20 +115,20 @@ class ResultsManager:
             self.logger.error(f"Error saving CSV: {str(e)}")
             return ""
     
-    def _save_txt(self, companies: Counter, company_details: Dict[str, Any]) -> str:
+    def _save_txt(self, companies: Counter, company_details: Dict[str, Any], filter_type: str = 'all') -> str:
         """Save results in human-readable text format"""
         txt_file = f"{self.base_filename}_{self.timestamp}.txt"
         
         try:
             with open(txt_file, 'w', encoding='utf-8') as f:
-                self._write_text_report(f, companies, company_details)
+                self._write_text_report(f, companies, company_details, filter_type)
             self.logger.info(f"Text report saved: {txt_file}")
             return txt_file
         except Exception as e:
             self.logger.error(f"Error saving text report: {str(e)}")
             return ""
     
-    def _write_text_report(self, file_handle, companies: Counter, company_details: Dict[str, Any]):
+    def _write_text_report(self, file_handle, companies: Counter, company_details: Dict[str, Any], filter_type: str = 'all'):
         """Write formatted text report"""
         f = file_handle
         
@@ -135,6 +136,7 @@ class ResultsManager:
         f.write(f"COMPANY ANALYSIS REPORT\n")
         f.write("=" * 60 + "\n\n")
         f.write(f"Generated: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}\n")
+        f.write(f"Filter type: {filter_type}\n")
         f.write(f"Total companies found: {len(companies):,}\n")
         f.write(f"Total folder entries: {sum(companies.values()):,}\n\n")
         
@@ -170,6 +172,8 @@ class ResultsManager:
         
         # Footer
         f.write(f"\nNote: Technical files and system folders have been filtered out.\n")
+        if filter_type != 'all':
+            f.write(f"Analysis filtered to {filter_type} only.\n")
         f.write("This report focuses on actual company/organization names.\n")
     
     def _format_company_details(self, company: str, company_details: Dict[str, Any]) -> Dict[str, Any]:
@@ -194,7 +198,7 @@ class ResultsManager:
             'file_types': sorted(list(details.get('file_types', set())))
         }
     
-    def print_summary(self, companies: Counter, company_details: Dict[str, Any]):
+    def print_summary(self, companies: Counter, company_details: Dict[str, Any], filter_type: str = 'all'):
         """Print a summary of the analysis results"""
         if not companies:
             print("No analysis results available.")
@@ -203,6 +207,7 @@ class ResultsManager:
         print("\n" + "="*80)
         print("COMPANY ANALYSIS SUMMARY")
         print("="*80)
+        print(f"Filter type: {filter_type}")
         print(f"Total unique companies found: {len(companies):,}")
         print(f"Total company folder entries: {sum(companies.values()):,}")
         
@@ -222,6 +227,8 @@ class ResultsManager:
         print(f"Companies with 21+ folders:   {sum(1 for c in counts if c > 20):3d}")
         
         print(f"\nNote: Technical files and system folders have been filtered out.")
+        if filter_type != 'all':
+            print(f"Analysis filtered to {filter_type} only.")
         print("Results focus on actual company/organization names.")
     
     def search_companies(self, companies: Counter, query: str) -> List[tuple]:

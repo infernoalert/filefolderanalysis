@@ -48,6 +48,8 @@ def parse_arguments():
 Examples:
   python main.py LPATech.csv                    # Analyze LPATech.csv
   python main.py data.csv --chunk-size 1000    # Use custom chunk size
+  python main.py data.csv --filter-type folders # Analyze folders only
+  python main.py data.csv --filter-type files   # Analyze files only
   python main.py --quick-preview               # Quick preview mode
   python main.py --validate-setup              # Validate setup
   python main.py --csv-info data.csv           # Show CSV file info
@@ -74,6 +76,13 @@ Examples:
         choices=['json', 'csv', 'txt'],
         default=config.output_formats,
         help='Output formats to generate (default: all)'
+    )
+    
+    parser.add_argument(
+        '--filter-type',
+        choices=['all', 'folders', 'files'],
+        default='all',
+        help='Filter analysis by item type: all (default), folders only, or files only'
     )
     
     parser.add_argument(
@@ -246,7 +255,7 @@ def main():
     
     try:
         # Initialize analyzer
-        analyzer = CompanyAnalyzer(args.csv_file, args.chunk_size)
+        analyzer = CompanyAnalyzer(args.csv_file, args.chunk_size, args.filter_type)
         
         # Configure column mappings if provided
         if args.column_mappings:
@@ -258,6 +267,7 @@ def main():
         # Run analysis
         print(f"🔍 Analyzing: {args.csv_file}")
         print(f"📊 Chunk size: {args.chunk_size:,}")
+        print(f"🔍 Filter type: {args.filter_type}")
         print()
         
         success = analyzer.analyze()
@@ -282,8 +292,11 @@ def main():
         stats = analyzer.get_analysis_stats()
         print(f"\n📈 Analysis Statistics:")
         print(f"   Detector type: {stats.get('detector_type', 'unknown').upper()}")
+        print(f"   Filter type: {stats.get('filter_type', 'all')}")
         print(f"   Total rows processed: {stats['total_rows_processed']:,}")
         print(f"   Technical files filtered: {stats['technical_files_filtered']:,}")
+        if stats.get('type_filtered', 0) > 0:
+            print(f"   Items filtered by type: {stats['type_filtered']:,}")
         print(f"   Unique companies found: {stats['unique_companies']:,}")
         print(f"   Total company entries: {stats['total_company_entries']:,}")
         

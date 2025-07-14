@@ -32,16 +32,18 @@ class CompanyAnalyzer:
     through modular design.
     """
     
-    def __init__(self, csv_file_path: Optional[str] = None, chunk_size: Optional[int] = None):
+    def __init__(self, csv_file_path: Optional[str] = None, chunk_size: Optional[int] = None, filter_type: Optional[str] = None):
         """
         Initialize the company analyzer
         
         Args:
             csv_file_path: Path to the CSV file to analyze
             chunk_size: Size of chunks for processing (default from config)
+            filter_type: Type of items to analyze ('all', 'folders', 'files')
         """
         self.csv_file_path = csv_file_path or config.default_csv_file
         self.chunk_size = chunk_size or config.chunk_size
+        self.filter_type = filter_type or config.filter_type
         
         # Setup logging first
         logging.basicConfig(level=logging.INFO)
@@ -77,6 +79,7 @@ class CompanyAnalyzer:
         self.stats = {
             'total_rows_processed': 0,
             'technical_files_filtered': 0,
+            'type_filtered': 0,
             'companies_found': 0,
             'processing_time': 0
         }
@@ -125,6 +128,7 @@ class CompanyAnalyzer:
         self.company_details.clear()
         self.stats['total_rows_processed'] = 0
         self.stats['technical_files_filtered'] = 0
+        self.stats['type_filtered'] = 0
         
         all_companies = []
         
@@ -139,6 +143,8 @@ class CompanyAnalyzer:
         
         self.logger.info(f"Processed {self.stats['total_rows_processed']:,} rows")
         self.logger.info(f"Filtered {self.stats['technical_files_filtered']:,} technical files")
+        if self.filter_type != 'all':
+            self.logger.info(f"Filtered {self.stats['type_filtered']:,} items by type ({self.filter_type})")
     
     def _process_chunk(self, chunk: pd.DataFrame) -> List[str]:
         """
@@ -163,6 +169,16 @@ class CompanyAnalyzer:
             if self.company_detector.is_technical_file(name):
                 self.stats['technical_files_filtered'] += 1
                 continue
+            
+            # Filter by item type if specified
+            if self.filter_type != 'all':
+                item_type = row_data['item_type']
+                if self.filter_type == 'folders' and item_type != 'Folder':
+                    self.stats['type_filtered'] += 1
+                    continue
+                elif self.filter_type == 'files' and item_type == 'Folder':
+                    self.stats['type_filtered'] += 1
+                    continue
             
             # Clean and detect companies
             cleaned_name = self.company_detector.clean_company_name(name)
@@ -219,12 +235,13 @@ class CompanyAnalyzer:
         return self.results_manager.save_results(
             self.companies, 
             self.company_details, 
-            output_formats
+            output_formats,
+            self.filter_type
         )
     
     def print_summary(self):
         """Print a summary of the analysis results"""
-        self.results_manager.print_summary(self.companies, self.company_details)
+        self.results_manager.print_summary(self.companies, self.company_details, self.filter_type)
     
     def get_analysis_stats(self) -> Dict[str, Any]:
         """
@@ -238,7 +255,8 @@ class CompanyAnalyzer:
             'unique_companies': len(self.companies),
             'total_company_entries': sum(self.companies.values()),
             'file_info': self.csv_processor.get_file_info(),
-            'detector_type': 'enhanced' if self.using_enhanced_detector else 'basic'
+            'detector_type': 'enhanced' if self.using_enhanced_detector else 'basic',
+            'filter_type': self.filter_type
         }
         
         # Add enhanced analysis if available

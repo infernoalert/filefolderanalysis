@@ -19,6 +19,7 @@ class AnalyzerConfig:
         self.default_csv_file = "LPATech.csv"
         self.min_company_name_length = 2
         self.max_company_name_length = 50
+        self.filter_type = 'all'  # Options: 'all', 'folders', 'files'
         
         # Exclusion patterns for technical files
         self.exclude_patterns = [
@@ -114,6 +115,13 @@ class AnalyzerConfig:
     def set_csv_column_mapping(self, column_mappings: Dict[str, str]) -> None:
         """Set custom CSV column mappings"""
         self.csv_columns.update(column_mappings)
+    
+    def set_filter_type(self, filter_type: str) -> None:
+        """Set the filter type for analysis"""
+        if filter_type in ['all', 'folders', 'files']:
+            self.filter_type = filter_type
+        else:
+            raise ValueError(f"Invalid filter type: {filter_type}. Must be 'all', 'folders', or 'files'")
 
 # Create default configuration instance
 config = AnalyzerConfig() 
