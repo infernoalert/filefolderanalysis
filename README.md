@@ -113,9 +113,10 @@ company-analyzer/
 
 ### 🌟 **Web UI Features (New!)**
 - **🎯 Drag & Drop Interface**: Upload CSV files and configurations easily
-- **🔄 Two Analysis Modes**: Local (offline) and MCP (AI-enhanced) options
+- **🔄 Multiple Analysis Modes**: Local (offline), Manual AI Analysis, and MCP (AI-enhanced) options
 - **📊 Interactive Results**: Charts, tables, and visual data exploration
 - **⚙️ Configuration Management**: Upload/download JSON configuration files
+- **🤖 AI-Powered Analysis**: Manual selection of terms for AI analysis with configurable templates
 - **🚀 One-Click Launch**: Automatic setup with `run_ui.py`
 - **📱 Mobile Responsive**: Works on desktop, tablet, and mobile devices
 - **🔍 Real-time Preview**: See CSV data before analysis
@@ -138,6 +139,8 @@ company-analyzer/
 - **📈 Market Insights**: Growth opportunities and trend analysis
 - **💡 Strategic Recommendations**: Actionable business advice
 - **📋 Executive Summaries**: Professional business reports
+- **🎯 Manual AI Analysis**: Select specific terms/phrases for AI-powered company identification
+- **⚙️ Configurable AI Templates**: Use predefined or custom JSON configurations for different analysis types
 
 ## 🛠️ Development
 

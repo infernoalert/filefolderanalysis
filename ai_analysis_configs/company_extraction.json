@@ -1,0 +1,31 @@
+{
+  "analysis_type": "company_extraction",
+  "name": "Company Name Extraction",
+  "description": "Extract and validate company names from manually selected terms/phrases",
+  "openai_model": "gpt-3.5-turbo",
+  "max_tokens": 2000,
+  "temperature": 0.3,
+  "instructions": {
+    "task": "Analyze the provided terms/phrases and identify which ones are actual company names",
+    "output_format": "json",
+    "required_fields": [
+      "company_name",
+      "confidence_score",
+      "company_type",
+      "industry",
+      "reasoning"
+    ]
+  },
+  "prompt_template": "Analyze the following terms/phrases and identify which ones are actual company names. For each term, provide:\n1. Whether it's a company name (true/false)\n2. Confidence score (0-1)\n3. Company type (corporation, llc, partnership, etc.)\n4. Industry classification\n5. Brief reasoning\n\nTerms to analyze: {terms}\n\nReturn as JSON array with objects containing: company_name, is_company, confidence_score, company_type, industry, reasoning",
+  "validation_rules": {
+    "min_confidence": 0.7,
+    "required_fields": ["company_name", "is_company", "confidence_score"],
+    "company_indicators": ["inc", "corp", "llc", "ltd", "company", "group", "holdings"]
+  },
+  "output_processing": {
+    "filter_by_confidence": true,
+    "min_confidence_threshold": 0.7,
+    "include_reasoning": true,
+    "group_by_industry": true
+  }
+} 

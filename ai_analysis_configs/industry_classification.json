@@ -1,0 +1,37 @@
+{
+  "analysis_type": "industry_classification",
+  "name": "Industry Classification",
+  "description": "Classify companies by industry and provide detailed industry analysis",
+  "openai_model": "gpt-3.5-turbo",
+  "max_tokens": 2500,
+  "temperature": 0.2,
+  "instructions": {
+    "task": "Classify companies by industry and provide detailed analysis",
+    "output_format": "json",
+    "required_fields": [
+      "company_name",
+      "primary_industry",
+      "secondary_industries",
+      "confidence_score",
+      "industry_description",
+      "market_position"
+    ]
+  },
+  "prompt_template": "Analyze the following company names and classify them by industry. For each company, provide:\n1. Primary industry classification\n2. Secondary industries (if applicable)\n3. Confidence score (0-1)\n4. Brief industry description\n5. Market position (leader, challenger, niche, etc.)\n\nCompanies to analyze: {companies}\n\nReturn as JSON array with objects containing: company_name, primary_industry, secondary_industries, confidence_score, industry_description, market_position",
+  "validation_rules": {
+    "min_confidence": 0.6,
+    "required_fields": ["company_name", "primary_industry", "confidence_score"],
+    "industry_categories": [
+      "Technology", "Healthcare", "Finance", "Retail", "Manufacturing",
+      "Energy", "Transportation", "Media", "Education", "Real Estate",
+      "Consulting", "Legal", "Construction", "Automotive", "Aerospace"
+    ]
+  },
+  "output_processing": {
+    "filter_by_confidence": true,
+    "min_confidence_threshold": 0.6,
+    "include_industry_description": true,
+    "group_by_primary_industry": true,
+    "generate_industry_summary": true
+  }
+} 
