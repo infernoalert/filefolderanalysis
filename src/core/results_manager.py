@@ -13,6 +13,7 @@ from typing import Dict, Any, List, Optional, Counter
 from datetime import datetime
 import logging
 from ..config.config import config
+from .name_categorizer import NameCategorizer
 
 
 class ResultsManager:
@@ -28,6 +29,14 @@ class ResultsManager:
         self.base_filename = base_filename
         self.timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
         self.logger = logging.getLogger(__name__)
+        
+        # Initialize name categorizer for offline analysis
+        try:
+            self.name_categorizer = NameCategorizer()
+            self.logger.info("Name categorizer initialized successfully")
+        except Exception as e:
+            self.logger.warning(f"Failed to initialize name categorizer: {e}")
+            self.name_categorizer = None
         
     def save_results(self, companies: Counter, company_details: Dict[str, Any], 
                     output_formats: Optional[List[str]] = None, filter_type: str = 'all') -> List[str]:
@@ -100,16 +109,31 @@ class ResultsManager:
         return created_files
     
     def _save_csv(self, companies: Counter) -> str:
-        """Save results in CSV format"""
+        """Save results in CSV format with categorization"""
         csv_file = f"{self.base_filename}_{self.timestamp}.csv"
         
         try:
-            df = pd.DataFrame([
-                {'Company': company, 'Folder_Count': count}
-                for company, count in companies.most_common()
-            ])
+            # Prepare data with categorization
+            csv_data = []
+            
+            for company, count in companies.most_common():
+                # Get category and description
+                if self.name_categorizer:
+                    category, description = self.name_categorizer.categorize_name(company)
+                else:
+                    category = 'Unknown'
+                    description = f'Name: {company}'
+                
+                csv_data.append({
+                    'Name': company,
+                    'Folder_Count': count,
+                    'Category': category,
+                    'Description': description
+                })
+            
+            df = pd.DataFrame(csv_data)
             df.to_csv(csv_file, index=False)
-            self.logger.info(f"CSV saved: {csv_file}")
+            self.logger.info(f"Enhanced CSV saved: {csv_file}")
             return csv_file
         except Exception as e:
             self.logger.error(f"Error saving CSV: {str(e)}")
@@ -133,19 +157,39 @@ class ResultsManager:
         f = file_handle
         
         # Header
-        f.write(f"COMPANY ANALYSIS REPORT\n")
+        f.write(f"ENHANCED COMPANY ANALYSIS REPORT\n")
         f.write("=" * 60 + "\n\n")
         f.write(f"Generated: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}\n")
         f.write(f"Filter type: {filter_type}\n")
-        f.write(f"Total companies found: {len(companies):,}\n")
-        f.write(f"Total folder entries: {sum(companies.values()):,}\n\n")
+        f.write(f"Total names found: {len(companies):,}\n")
+        f.write(f"Total folder entries: {sum(companies.values()):,}\n")
+        
+        # Category analysis
+        if self.name_categorizer:
+            f.write(f"Name categorization: ENABLED\n\n")
+            
+            # Get category summary
+            company_names = list(companies.keys())
+            category_summary = self.name_categorizer.get_category_summary(company_names)
+            
+            f.write("NAME CATEGORIZATION SUMMARY:\n")
+            f.write("-" * 40 + "\n")
+            for category, count in sorted(category_summary.items(), key=lambda x: x[1], reverse=True):
+                f.write(f"{category:<25} {count:3d} names\n")
+            f.write("\n")
+        else:
+            f.write(f"Name categorization: DISABLED\n\n")
         
         # Top companies
-        f.write("TOP COMPANIES BY FOLDER COUNT:\n")
+        f.write("TOP NAMES BY FOLDER COUNT:\n")
         f.write("-" * 40 + "\n")
         
         for i, (company, count) in enumerate(companies.most_common(config.max_summary_companies), 1):
-            f.write(f"{i:3d}. {company:<40} ({count:3d} folders)\n")
+            if self.name_categorizer:
+                category, description = self.name_categorizer.categorize_name(company)
+                f.write(f"{i:3d}. {company:<30} ({count:3d} folders) - {category}\n")
+            else:
+                f.write(f"{i:3d}. {company:<40} ({count:3d} folders)\n")
         
         # Distribution analysis
         counts = list(companies.values())
@@ -157,13 +201,20 @@ class ResultsManager:
         f.write(f"Companies with 11-20 folders: {sum(1 for c in counts if 11 <= c <= 20):3d}\n")
         f.write(f"Companies with 21+ folders:   {sum(1 for c in counts if c > 20):3d}\n")
         
-        # Detailed company information
-        f.write("\nDETAILED COMPANY INFORMATION:\n")
+        # Detailed name information
+        f.write("\nDETAILED NAME INFORMATION:\n")
         f.write("-" * 40 + "\n")
         
         for company in sorted(companies.keys()):
             details = self._format_company_details(company, company_details)
             f.write(f"\n{company}:\n")
+            
+            # Add categorization information
+            if self.name_categorizer:
+                category, description = self.name_categorizer.categorize_name(company)
+                f.write(f"  Category: {category}\n")
+                f.write(f"  Description: {description}\n")
+            
             f.write(f"  Folders: {details['folder_count']}\n")
             f.write(f"  Unique paths: {len(details['paths'])}\n")
             f.write(f"  Modified by: {len(details['modified_by'])} people\n")
@@ -174,7 +225,12 @@ class ResultsManager:
         f.write(f"\nNote: Technical files and system folders have been filtered out.\n")
         if filter_type != 'all':
             f.write(f"Analysis filtered to {filter_type} only.\n")
-        f.write("This report focuses on actual company/organization names.\n")
+        if self.name_categorizer:
+            f.write("This enhanced report includes intelligent name categorization to distinguish\n")
+            f.write("between actual companies and other entities like abbreviations, technical terms,\n")
+            f.write("and document references.\n")
+        else:
+            f.write("This report focuses on detected names that may include companies and other entities.\n")
     
     def _format_company_details(self, company: str, company_details: Dict[str, Any]) -> Dict[str, Any]:
         """Format detailed company information"""
@@ -205,16 +261,36 @@ class ResultsManager:
             return
         
         print("\n" + "="*80)
-        print("COMPANY ANALYSIS SUMMARY")
+        print("ENHANCED COMPANY ANALYSIS SUMMARY")
         print("="*80)
         print(f"Filter type: {filter_type}")
-        print(f"Total unique companies found: {len(companies):,}")
-        print(f"Total company folder entries: {sum(companies.values()):,}")
+        print(f"Total unique names found: {len(companies):,}")
+        print(f"Total folder entries: {sum(companies.values()):,}")
         
-        print(f"\nTop {min(config.max_summary_companies, len(companies))} Companies by Folder Count:")
+        # Category analysis
+        if self.name_categorizer:
+            print(f"Name categorization: ENABLED")
+            
+            # Get category summary
+            company_names = list(companies.keys())
+            category_summary = self.name_categorizer.get_category_summary(company_names)
+            
+            print(f"\nName Categorization Summary:")
+            print("-" * 40)
+            for category, count in sorted(category_summary.items(), key=lambda x: x[1], reverse=True):
+                percentage = (count / len(companies)) * 100
+                print(f"{category:<25} {count:3d} names ({percentage:5.1f}%)")
+        else:
+            print(f"Name categorization: DISABLED")
+        
+        print(f"\nTop {min(config.max_summary_companies, len(companies))} Names by Folder Count:")
         print("-" * 60)
         for i, (company, count) in enumerate(companies.most_common(config.max_summary_companies), 1):
-            print(f"{i:2d}. {company:<45} ({count:3d} folders)")
+            if self.name_categorizer:
+                category, description = self.name_categorizer.categorize_name(company)
+                print(f"{i:2d}. {company:<35} ({count:3d} folders) - {category}")
+            else:
+                print(f"{i:2d}. {company:<45} ({count:3d} folders)")
         
         # Distribution statistics
         counts = list(companies.values())

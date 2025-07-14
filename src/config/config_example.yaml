@@ -1,66 +1,80 @@
-# Company Analyzer Configuration Example
-# This file demonstrates various configuration options available
+# ==========================================
+# LOCAL CONFIGURATION FOR COMPANY ANALYZER
+# ==========================================
+# This config focuses on LOCAL analysis only - no AI or online features
 
-# Core processing settings
-chunk_size: 3000
-default_csv_file: "my_data.csv"
-min_company_name_length: 3
-max_company_name_length: 100
-filter_type: "folders"  # Options: 'all', 'folders', 'files'
+# ==========================================
+# WHAT TO ANALYZE (THIS IS THE KEY SETTING!)
+# ==========================================
+filter_type: "all"
+# Options:
+#   "all"     - Analyze both files and folders
+#   "folders" - Only analyze folders  
+#   "files"   - Only analyze files
 
-# Detection and analysis settings
-confidence_threshold: 0.5
-strict_mode: true
-enable_enhanced_detection: true
-enable_caching: true
-enable_parallel_processing: false
+# ==========================================
+# BASIC PROCESSING SETTINGS
+# ==========================================
+chunk_size: 5000
+# How many rows to process at once (larger = faster but more memory)
 
-# Logging configuration
-log_level: "DEBUG"  # DEBUG, INFO, WARNING, ERROR, CRITICAL
-log_file: "debug_analyzer.log"
-log_format: "%(asctime)s - %(name)s - %(levelname)s - %(message)s"
+confidence_threshold: 0.3
+# How confident to be about company detection (0.0-1.0, lower = more results)
 
-# Output settings
-max_search_results: 20
-max_summary_companies: 100
-output_directory: "custom_output"
+# ==========================================
+# COMPANY NAME RULES
+# ==========================================
+min_company_name_length: 2
+max_company_name_length: 50
+# Company names must be between these lengths
+
+# ==========================================
+# OUTPUT SETTINGS
+# ==========================================
 output_formats:
   - "json"
   - "csv"
-  - "xlsx"
+  - "txt"
+# Which file formats to save results in
 
-# NLP settings
-spacy_model: "en_core_web_sm"
+max_search_results: 10
+# Maximum results to show in searches
 
-# Known companies (will be added to the default list)
-known_companies:
-  - "Accent Group"
-  - "AGL"
-  - "My Custom Company Inc"
-  - "Another Business LLC"
-  - "Tech Startup Co"
+max_summary_companies: 50
+# Maximum companies to show in summary
 
-# Additional exclusion patterns (will be added to defaults)
-exclude_patterns:
-  - "^TEST_.*"        # Test files
-  - ".*_BACKUP$"      # Backup files
-  - "^TEMP_.*"        # Temporary files
-  - ".*_OLD$"         # Old files
-
-# Additional company indicator patterns
-company_indicators:
-  - "\\b(startup|venture|capital)\\b"
-  - "\\b(fintech|biotech|cleantech)\\b"
-
-# CSV column mappings (customize for your CSV structure)
+# ==========================================
+# CSV FILE STRUCTURE
+# ==========================================
+# Tell the analyzer which columns in your CSV contain what data
 csv_columns:
-  name: "Company Name"
-  path: "File Path"
-  modified_by: "Last Modified By"
-  item_type: "Type"
-  file_size: "Size"
-  modified: "Date Modified"
+  name: "Name"                    # Column with file/folder names
+  path: "Path"                    # Column with file paths
+  modified_by: "Modified By"      # Column with who modified it
+  item_type: "Item Type"          # Column with "File" or "Folder"
+  file_size: "File Size"          # Column with file sizes
+  modified: "Modified"            # Column with modification dates
 
-# Performance settings
-max_workers: 6
-cache_size: 2000 
+# Example: if your CSV has "Company Name" column, change "Name" to "Company Name"
+
+# ==========================================
+# OPTIONAL: ADD KNOWN COMPANIES
+# ==========================================
+# Companies you know exist - helps improve detection accuracy
+known_companies:
+  - "Microsoft Corporation"
+  - "Apple Inc"
+  - "Google LLC"
+  - "Amazon Web Services"
+
+# ==========================================
+# TECHNICAL SETTINGS (usually don't need to change)
+# ==========================================
+enable_enhanced_detection: true
+# Use advanced NLP for better company detection
+
+enable_caching: true
+# Speed up processing by caching results
+
+log_level: "INFO"
+# How much logging: DEBUG, INFO, WARNING, ERROR 

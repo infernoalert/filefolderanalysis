@@ -1,0 +1,37 @@
+{
+  "chunk_size": 5000,
+  "filter_type": "all",
+  "confidence_threshold": 0.3,
+  "enable_enhanced_detection": true,
+  "enable_ai_analysis": true,
+  "enable_mcp_server": true,
+  "openai_model": "gpt-3.5-turbo",
+  "openai_max_tokens": 2000,
+  "openai_temperature": 0.3,
+  "ai_max_companies_batch": 20,
+  "mcp_server_host": "0.0.0.0",
+  "mcp_server_port": 8005,
+  "mcp_enable_cors": true,
+  "log_level": "INFO",
+  "output_formats": [
+    "json",
+    "csv",
+    "txt"
+  ],
+  "max_search_results": 10,
+  "max_summary_companies": 50,
+  "known_companies": [
+    "Microsoft Corporation",
+    "Apple Inc",
+    "Google LLC",
+    "Amazon Web Services"
+  ],
+  "csv_columns": {
+    "name": "Name",
+    "path": "Path",
+    "modified_by": "Modified By",
+    "item_type": "Item Type",
+    "file_size": "File Size",
+    "modified": "Modified"
+  }
+}

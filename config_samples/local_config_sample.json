@@ -1,0 +1,32 @@
+{
+  "chunk_size": 5000,
+  "filter_type": "all",
+  "confidence_threshold": 0.3,
+  "enable_enhanced_detection": true,
+  "enable_caching": true,
+  "log_level": "INFO",
+  "output_formats": [
+    "json",
+    "csv",
+    "txt"
+  ],
+  "max_search_results": 10,
+  "max_summary_companies": 50,
+  "min_company_name_length": 2,
+  "max_company_name_length": 50,
+  "spacy_model": "en_core_web_sm",
+  "known_companies": [
+    "Microsoft Corporation",
+    "Apple Inc",
+    "Google LLC",
+    "Amazon Web Services"
+  ],
+  "csv_columns": {
+    "name": "Name",
+    "path": "Path",
+    "modified_by": "Modified By",
+    "item_type": "Item Type",
+    "file_size": "File Size",
+    "modified": "Modified"
+  }
+}

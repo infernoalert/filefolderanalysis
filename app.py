@@ -193,13 +193,18 @@ def run_local_analysis(csv_file, config: Dict[str, Any]) -> tuple[bool, str, Opt
         success = analyzer.analyze()
         
         if success:
+            # Save results to files (like CLI does)
+            output_formats = config.get("output_formats", ["json", "csv", "txt"])
+            created_files = analyzer.save_results(output_formats)
+            
             # Get results
             results = {
                 "companies": dict(analyzer.companies.most_common(50)),
                 "total_companies": len(analyzer.companies),
                 "total_entries": sum(analyzer.companies.values()),
                 "stats": analyzer.stats,
-                "using_enhanced_detector": analyzer.using_enhanced_detector
+                "using_enhanced_detector": analyzer.using_enhanced_detector,
+                "output_files": created_files  # Include created file paths
             }
             
             # Clean up temporary files
@@ -251,6 +256,18 @@ def run_mcp_analysis(csv_file, config: Dict[str, Any]) -> tuple[bool, str, Optio
         success = analyzer.analyze()
         
         if success:
+            # Save results to files (like CLI does)
+            output_formats = config.get("output_formats", ["json", "csv", "txt"])
+            created_files = analyzer.save_results(output_formats)
+            
+            # Save AI results if available
+            ai_files = []
+            if hasattr(analyzer, 'save_ai_results'):
+                try:
+                    ai_files = analyzer.save_ai_results()
+                except:
+                    pass  # AI results saving is optional
+            
             # Get AI-enhanced results
             results = {
                 "companies": dict(analyzer.companies.most_common(50)),
@@ -260,7 +277,8 @@ def run_mcp_analysis(csv_file, config: Dict[str, Any]) -> tuple[bool, str, Optio
                 "using_enhanced_detector": analyzer.using_enhanced_detector,
                 "ai_enabled": analyzer.enable_ai,
                 "ai_results": analyzer.ai_results if hasattr(analyzer, 'ai_results') else None,
-                "executive_summary": analyzer.executive_summary if hasattr(analyzer, 'executive_summary') else None
+                "executive_summary": analyzer.executive_summary if hasattr(analyzer, 'executive_summary') else None,
+                "output_files": created_files + ai_files  # Include all created file paths
             }
             
             # Clean up temporary files
@@ -455,7 +473,7 @@ def main():
             
             if results:
                 # Create tabs for different result views
-                tab1, tab2, tab3 = st.tabs(["📈 Summary", "🏢 Companies", "📋 Details"])
+                tab1, tab2, tab3, tab4 = st.tabs(["📈 Summary", "🏢 Companies", "📋 Details", "📁 Output Files"])
                 
                 with tab1:
                     st.subheader("📈 Analysis Summary")
@@ -498,6 +516,39 @@ def main():
                     if results.get("ai_results"):
                         st.subheader("🤖 AI Analysis Details")
                         st.json(results["ai_results"])
+                
+                with tab4:
+                    st.subheader("📁 Generated Output Files")
+                    
+                    if results.get("output_files"):
+                        st.success(f"✅ {len(results['output_files'])} output files created successfully!")
+                        
+                        for file_path in results["output_files"]:
+                            file_name = os.path.basename(file_path)
+                            file_size = os.path.getsize(file_path) if os.path.exists(file_path) else 0
+                            
+                            col1, col2, col3 = st.columns([3, 1, 1])
+                            with col1:
+                                st.write(f"📄 **{file_name}**")
+                            with col2:
+                                st.write(f"{file_size:,} bytes")
+                            with col3:
+                                # Create download button
+                                if os.path.exists(file_path):
+                                    with open(file_path, 'rb') as f:
+                                        st.download_button(
+                                            label="📥 Download",
+                                            data=f.read(),
+                                            file_name=file_name,
+                                            mime="application/octet-stream",
+                                            key=f"download_{file_name}"
+                                        )
+                        
+                        st.info("💡 **Tip**: Files are also saved in your project directory for CLI access!")
+                        st.code("\n".join([f"• {os.path.basename(f)}" for f in results["output_files"]]))
+                        
+                    else:
+                        st.warning("⚠️ No output files were created")
         else:
             display_status(message, "error")
     
