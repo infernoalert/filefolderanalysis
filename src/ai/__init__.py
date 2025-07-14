@@ -8,9 +8,9 @@ This package contains AI-enhanced analysis capabilities including:
 """
 
 from .ai_analyzer import AICompanyAnalyzer
-from .company_analyzer_ai import CompanyAnalyzerAI
+from .company_analyzer_ai import AIEnhancedCompanyAnalyzer
 
 __all__ = [
     "AICompanyAnalyzer",
-    "CompanyAnalyzerAI"
+    "AIEnhancedCompanyAnalyzer"
 ] 

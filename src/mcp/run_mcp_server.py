@@ -17,8 +17,8 @@ from dotenv import load_dotenv
 project_root = Path(__file__).parent
 sys.path.insert(0, str(project_root))
 
-from mcp_server import MCPCompanyAnalysisServer
-from config import AnalyzerConfig
+from .mcp_server import MCPCompanyAnalysisServer
+from ..config import AnalyzerConfig
 
 
 def setup_logging(verbose: bool = False):
