@@ -1,10 +1,32 @@
 # Company Analyzer
 
-A powerful, AI-enhanced Python solution for extracting company names from CSV files with offline NLP capabilities and MCP server integration.
+A powerful, AI-enhanced Python solution for extracting company names from CSV files with offline NLP capabilities and MCP server integration. **Now with a beautiful web UI!**
 
 ## 🚀 Quick Start
 
-### Installation
+### 🖥️ **Web UI (Recommended - No Command Line Required!)**
+
+```bash
+# One-command launch (handles all setup automatically)
+python run_ui.py
+
+# Or manually:
+pip install -r requirements.txt
+streamlit run app.py
+```
+
+**Then open:** `http://localhost:8501` in your browser
+
+**Features:**
+- 🎯 **Drag & drop CSV files** - No file paths needed
+- ⚙️ **Upload JSON configurations** - Easy setup
+- 📊 **Interactive results** - Charts and tables
+- 🤖 **AI insights** - Business intelligence mode
+- 📱 **Mobile-friendly** - Works on any device
+
+**📖 Full UI Guide:** [UI_README.md](UI_README.md)
+
+### 💻 **Command Line Interface (Advanced Users)**
 
 ```bash
 # Clone the repository
@@ -16,12 +38,8 @@ pip install -r requirements.txt
 
 # Setup NLP models
 python scripts/setup.py
-```
 
-### Basic Usage (Offline Analysis)
-
-```bash
-# Analyze a CSV file
+# Basic analysis
 python main.py your_file.csv
 
 # Quick preview mode
@@ -94,14 +112,28 @@ company-analyzer/
 ├── examples/                      # Usage examples
 ├── scripts/                       # Utility scripts
 │   └── setup.py                   # Setup script
-├── main.py                        # Main entry point
+├── app.py                         # 🌟 Streamlit Web UI
+├── run_ui.py                      # 🚀 UI launcher script
+├── demo_usage.py                  # 📖 Demo and usage examples
+├── UI_README.md                   # 📱 UI documentation
+├── main.py                        # Main CLI entry point
 ├── requirements.txt               # Python dependencies
 └── setup.py                       # Package setup
 ```
 
 ## ✨ Features
 
-### 🔍 Core Analysis Features
+### 🌟 **Web UI Features (New!)**
+- **🎯 Drag & Drop Interface**: Upload CSV files and configurations easily
+- **🔄 Two Analysis Modes**: Local (offline) and MCP (AI-enhanced) options
+- **📊 Interactive Results**: Charts, tables, and visual data exploration
+- **⚙️ Configuration Management**: Upload/download JSON configuration files
+- **🚀 One-Click Launch**: Automatic setup with `run_ui.py`
+- **📱 Mobile Responsive**: Works on desktop, tablet, and mobile devices
+- **🔍 Real-time Preview**: See CSV data before analysis
+- **💾 Template Downloads**: Get configuration templates instantly
+
+### 🔍 **Core Analysis Features**
 - **🧠 Enhanced NLP Detection**: Uses spaCy and NLTK for intelligent company identification
 - **🎯 Superior Accuracy**: Filters out version numbers and technical references
 - **🏗️ Modular Architecture**: Clean separation of concerns
@@ -111,7 +143,7 @@ company-analyzer/
 - **🔎 Interactive Search**: Built-in search capabilities
 - **💻 Offline Operation**: No API calls required
 
-### 🤖 AI Enhancement Features (New!)
+### 🤖 **AI Enhancement Features**
 - **🏭 Industry Classification**: Automatically categorize companies by industry
 - **⚠️ Risk Assessment**: AI-powered business risk analysis
 - **🤝 Business Relationships**: Detect partnerships and competitors
@@ -147,22 +179,25 @@ mypy src/
 
 ## 📚 Documentation
 
-### 📖 Getting Started
-- **[Simple MCP Guide](docs/MCP_SIMPLE_GUIDE.md)** - ⭐ **START HERE** for MCP/AI usage
-- **[Main README](README.md)** - This file, basic usage
+### 🌟 **Getting Started (Choose Your Path)**
+- **[UI README](UI_README.md)** - ⭐ **START HERE** for web interface usage
+- **[Demo Usage](demo_usage.py)** - Interactive examples and sample files
+- **[Simple MCP Guide](docs/MCP_SIMPLE_GUIDE.md)** - MCP/AI usage guide
+- **[Main README](README.md)** - This file, overview and CLI usage
 
-### 🔧 Configuration & Setup
+### 🔧 **Configuration & Setup**
 - **[Configuration Guide](docs/CONFIGURATION.md)** - Detailed configuration options
 - **[AI/MCP Integration](docs/AI_MCP_INTEGRATION.md)** - Technical AI integration guide
 
-### 📊 Reference Documentation
+### 📊 **Reference Documentation**
 - **[API Reference](docs/README.md)** - Complete API documentation
 - **[MCP AI Summary](docs/MCP_AI_SUMMARY.md)** - Feature overview and examples
 
-### 🚀 Quick Links
-- **New to MCP?** → [Simple MCP Guide](docs/MCP_SIMPLE_GUIDE.md)
-- **Need AI setup?** → [AI Integration Guide](docs/AI_MCP_INTEGRATION.md)
-- **Want examples?** → [MCP AI Summary](docs/MCP_AI_SUMMARY.md)
+### 🚀 **Quick Links**
+- **New user?** → [UI README](UI_README.md) (Web interface)
+- **Need examples?** → Run `python demo_usage.py`
+- **Want MCP/AI?** → [Simple MCP Guide](docs/MCP_SIMPLE_GUIDE.md)
+- **CLI user?** → [Configuration Guide](docs/CONFIGURATION.md)
 
 ## 🤝 Contributing
 
@@ -178,7 +213,39 @@ This project is licensed under the MIT License - see the LICENSE file for detail
 
 ## 🆘 Support
 
-For questions and support:
+### 🌟 **Getting Help**
+
+**For Web UI Issues:**
+- Check [UI README](UI_README.md) for troubleshooting
+- Run `python demo_usage.py` for examples
+- Ensure Python 3.8+ is installed
+
+**For General Support:**
 - Create an issue on GitHub
 - Check the documentation in `docs/`
-- Review examples in `examples/` 
+- Review examples and demos
+
+**Common Solutions:**
+- **UI won't start**: Run `python run_ui.py` (handles setup automatically)
+- **Enhanced detector failed**: Install spaCy model: `python -m spacy download en_core_web_sm`
+- **AI features not working**: Check OpenAI API key and configuration
+- **CSV validation failed**: Verify file format and column names
+
+### 🚀 **Quick Start Options**
+- **Easiest**: `python run_ui.py` → Open `http://localhost:8501`
+- **CLI**: `python main.py your_file.csv`
+- **Demo**: `python demo_usage.py` → Get sample files and examples
+
+---
+
+## 🎉 **Ready to Analyze Your Data!**
+
+The **Web UI** is the recommended way to use this tool - it's user-friendly, requires no command-line experience, and provides beautiful visualizations of your results.
+
+**Just run:** `python run_ui.py` **and start analyzing!** 🚀
+
+Perfect for:
+- 📁 **SharePoint exports** - Clean company data from document libraries
+- 🏢 **Business intelligence** - AI-powered industry analysis and insights
+- 📊 **Data cleaning** - Remove technical artifacts and extract real companies
+- 🤖 **AI analysis** - Get executive summaries and strategic recommendations 
